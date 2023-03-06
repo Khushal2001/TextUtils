@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Indian Railways API Example</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    label {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    input {
+      width: 200px;
+      padding: 5px;
+      font-size: 20px;
+    }
+    button {
+      padding: 5px 20px;
+      font-size: 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #train-details {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h2 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 20px;
+      margin-top: 0;
+    }
+    strong {
+      font-weight: bold;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#search-form').submit(function(event) {
+        event.preventDefault();
+        var apiKey = 'fda07ac403msh90f40318a739c2fp109b3cjsn057540ab0f72';
+        var trainNumber = $('#train_number').val();
+        var apiUrl = 'https://irctc1.p.rapidapi.com/api/v1/searchTrain?query=190';
+        $.ajax({
+          url: apiUrl,
+          type: 'GET',
+          headers: {
+            'x-rapidapi-host': 'irctc1.p.rapidapi.com',
+            'x-rapidapi-key': apiKey
+          },
+          success: function(data) {
+            $('#train-details').fadeIn();
+            $('#train-name').text(data.train_name);
+            $('#train-number').text(data.TrainNumber);
+            $('#source').text(data.Source);
+            $('#destination').text(data.Destination);
+            $('#arrival-time').text(data.ArrivalTime);
+            $('#departure-time').text(data.DepartureTime);
+          },
+          error: function() {
+            alert('Error fetching data from API.');
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Indian Railways API Example</h1>
+  <form id="search-form">
+    <label for="train-number">Enter Train Number:</label>
+    <input type="text" id="train-number" name="train-number">
+    <button type="submit">Search</button>
+  </form>
+  <div id="train-details" style="display: none;">
+    <h2>Train Details:</h2>
+    <p><strong>Train Name:</strong> <span id="train-name"></span></p>
+    <p><strong>Train Number:</strong> <span id="train-number"></span></p>
+    <p><strong>Source Station:</strong> <span id="source"></span></p>
+    <p><strong>Destination Station:</strong> <span id="destination"></span></p>
+    <p><strong>Arrival Time:</strong> <span id="arrival-time"></span></p>
+    <p><strong>Departure Time:</strong> <span id="departure-time"></span></p>
+    </div>
+</body>
+</html>
